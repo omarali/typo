@@ -604,5 +604,36 @@ describe Article do
     end
 
   end
+    
+  describe "merging" do
+    before do
+      @a = Article.new
+      @a.user_id = 1
+      @a.body = "Foo"
+      @a.title = "Zzz"
+      
+      @b = Article.new
+      @b.user_id = 1
+      @b.body = "Bar"
+      @b.title = "Zzz"
+    end
+    
+    it "should append the second article's body to the first" do
+      #TODO
+      merged_body = @a.body + @b.body;
+      @a.merge(@b)
+      @a.body.should be == merged_body
+    end
+    
+    it "should move the second article's comments to the first" do
+      #TODO
+    end
+    
+    it "should delete the second article" do
+      #TODO
+      @a.merge(@b)
+      @b.should_receive(:destroy)
+    end
+  end
 end
 

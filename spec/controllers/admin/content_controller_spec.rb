@@ -544,6 +544,17 @@ describe Admin::ContentController do
         Article.should_not be_exists({:id => draft.id})
         Article.should_not be_exists({:id => draft_2.id})
       end
+      
+      it 'should allow merging articles' do
+        @article1 = mock('article1', :id => '1')
+        @article2 = mock('article2', :id => '2')
+        Article.should_receive(:find).with(@article1.id).and_return @article1
+        Article.should_receive(:find).with(@article2.id).and_return @article2
+        @article1.should_receive(:merge).with(@article2)
+        post :merge, :id => @article1.id, :merge_article_id => @article2.id
+        response.should redirect_to(:controller => 'content', :action => 'index')
+        flash[:notice].should_not be nil
+      end
     end
 
     describe 'resource_add action' do
@@ -656,6 +667,17 @@ describe Admin::ContentController do
         ensure
           ActionMailer::Base.perform_deliveries = false
         end
+      end
+      
+      it 'should not allow merging articles' do
+        @article1 = mock('article1', :id => '1')
+        @article2 = mock('article2', :id => '2')
+        Article.should_receive(:find).with(@article1.id).and_return @article1
+        Article.should_not_receive(:find).with(@article2.id)
+        @article1.should_not_receive(:merge).with(@article2)
+        post :merge, :id => @article1.id, :merge_article_id => @article2.id
+        response.should redirect_to(:controller => 'content', :action => 'index')
+        flash[:error].should_not be nil
       end
     end
 

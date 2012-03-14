@@ -468,5 +468,12 @@ class Article < Content
   end
   
   def merge(article)
+    #TODO: merge comments
+    #debugger
+    article[0].comments.each { |c| self.add_comment c }
+    self.body = self.body + article[0].body
+    #self.comments << article[0].comments
+    self.save
+    #article[0].destroy
   end
 end

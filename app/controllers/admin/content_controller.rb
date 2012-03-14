@@ -52,7 +52,7 @@ class Admin::ContentController < Admin::BaseController
       return
     end
     
-    @article.merge @article2
+    @article.merge(@article2[0])
     redirect_to :action => 'index'
     flash[:notice] = _("Articles were successfully merged.")
   end

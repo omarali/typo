@@ -415,6 +415,13 @@ class Article < Content
   def access_by?(user)
     user.admin? || user_id == user.id
   end
+  
+  def merge(article)
+    self.body = self.body + article.body
+    self.comments << article.comments
+    self.save
+    article.delete
+  end
 
   protected
 
@@ -465,8 +472,5 @@ class Article < Content
     to = from + 1.day unless day.blank?
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
-  end
-  
-  def merge(article)
   end
 end

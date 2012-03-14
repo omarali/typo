@@ -44,7 +44,15 @@ class Admin::ContentController < Admin::BaseController
       flash[:error] = _("Error, you are not allowed to perform this action")
       return
     end
-    @article.merge Article.find(params[:merge_article_id])
+    
+    @article2 = Article.find(params[:merge_article_id]) rescue nil
+    unless @article2
+      redirect_to :action => 'index'
+      flash[:error] = _("Error, you entered an invalid article ID.")
+      return
+    end
+    
+    @article.merge @article2
     redirect_to :action => 'index'
     flash[:notice] = _("Articles were successfully merged.")
   end

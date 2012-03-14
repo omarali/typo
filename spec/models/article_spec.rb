@@ -604,5 +604,30 @@ describe Article do
     end
 
   end
+    
+  describe "merging" do
+    before do
+      @article1 = Factory(:article, :title => 'Article 1!', :body => 'Foo', :state => 'published')
+      @article2 = Factory(:article, :title => 'Article 2!', :body => 'Bar', :state => 'published')
+      @comment1 = Factory(:comment, :article => @article2, :body => 'zzz')
+
+    end
+    
+    it "should append the second article's body to the first" do
+      merged_body = @article1.body + @article2.body
+      @article1.merge(@article2)
+      @article1.body.should be == merged_body
+    end
+    
+    it "should move the second article's comments to the first" do
+      @article1.merge(@article2)
+      @article1.comments.should be == @article2.comments
+    end
+    
+    it "should delete the second article" do
+      @article2.should_receive(:destroy)
+      @article1.merge(@article2)
+    end
+  end
 end
 

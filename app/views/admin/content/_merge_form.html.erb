@@ -1,7 +1,7 @@
 <%= form_for @article, :url => { :action => "merge", :id => @article.id } do |f| %>
   <div class='well'>
     <h4><%= _("Merge Articles") %></h4>
-    <%= text_field 'merge_article_id','', :style => 'margin-right:1em', :placeholder => _('Article ID') %>
+    <%= text_field_tag 'merge_article_id','', :style => 'margin-right:1em', :placeholder => _('Article ID') %>
     <%= save( _("Merge Articles")) %>
   </div>
 <% end %>

@@ -625,7 +625,7 @@ describe Article do
     end
     
     it "should delete the second article" do
-      @article2.should_receive(:destroy)
+      @article2.should_receive(:delete)
       @article1.merge(@article2)
     end
   end

@@ -417,7 +417,8 @@ class Article < Content
   end
   
   def merge(article)
-    self.body = self.body + article.body
+    self.body = article.body if self.body.nil?
+    self.body = self.body + article.body if not article.body.nil?
     self.comments << article.comments
     self.save
     article.delete

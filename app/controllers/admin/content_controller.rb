@@ -45,6 +45,12 @@ class Admin::ContentController < Admin::BaseController
       return
     end
     
+    if params[:id] == params[:merge_article_id] then
+      redirect_to :action => 'index'
+      flash[:error] = _("Error, you cannot merge an article with itself.")
+      return
+    end
+
     @article2 = Article.find(params[:merge_article_id]) rescue nil
     unless @article2
       redirect_to :action => 'index'

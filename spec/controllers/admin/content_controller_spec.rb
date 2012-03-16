@@ -566,6 +566,15 @@ describe Admin::ContentController do
         response.should redirect_to(:controller => 'content', :action => 'index')
         flash[:error].should_not be nil
       end
+      
+      it 'should not merge an article with itself' do
+        @article1 = mock('article1', :id => '1')
+        Article.should_receive(:find).with(@article1.id).and_return @article1
+        @article1.should_not_receive(:merge).with(nil)
+        post :merge, :id => @article1.id, :id => @article1.id
+        response.should redirect_to(:controller => 'content', :action => 'index')
+        flash[:error].should_not be nil
+      end
     end
 
     describe 'resource_add action' do
